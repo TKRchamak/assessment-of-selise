@@ -21,16 +21,24 @@ const CreateAppointmentModal = ({
 }) => {
   // const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
   const { register, handleSubmit, reset } = useForm();
+
   const onSubmit = async (data: AppointmentType | any) => {
     console.log(data);
-    // try {
-    //   const response = await axios.post(`${serverUrl}/events`);
-    //   // console.log(response.data);
-    //   dispatch(storeAppointmentData(response.data));
-    // } catch (error) {
-    //   console.log("createProjectRequest error", error);
-    //   alert("task not create");
-    // }
+    try {
+      const response = await axios.post(`${serverUrl}/events`, data);
+      console.log(response);
+      setModalStatus(false);
+      reset({
+        name: "",
+        gender: "male",
+        age: "",
+        date: "",
+        time: "",
+      });
+    } catch (error) {
+      console.log("createProjectRequest error", error);
+      alert("task not create");
+    }
   };
 
   return (
@@ -115,21 +123,7 @@ const CreateAppointmentModal = ({
               placeholder="time"
               className="input input-bordered w-full mb-2"
             />
-            <button
-              className="btn w-full mb-2"
-              onClick={() => {
-                setModalStatus(false);
-                reset({
-                  name: "",
-                  gender: "male",
-                  age: "",
-                  date: "",
-                  time: "",
-                });
-              }}
-            >
-              Create Appointment
-            </button>
+            <button className="btn w-full mb-2">Create Appointment</button>
           </form>
         </div>
       </div>

@@ -12,6 +12,8 @@ const Calendar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { year, month } = useParams();
+  console.log(year, month);
+
   const calendarRef = useRef<any>(null);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const yearList = useSelector((state: any) => state?.appointment?.yearList);
@@ -24,7 +26,7 @@ const Calendar = () => {
     `${new Date().getUTCFullYear()}`
   );
   const [selectedMonth, setSelectedMonth] = useState<string>(
-    `${new Date().getMonth()}`
+    `${new Date().getMonth() + 1}`
   );
 
   const getData = async () => {
@@ -46,17 +48,18 @@ const Calendar = () => {
       setSelectedMonth(month);
     }
 
-    if (calendarRef.current) {
-      let currData = selectedMonth;
-      if (+selectedMonth < 10) {
-        currData = `0${selectedMonth}`;
-      }
-      const api = calendarRef.current.getApi();
-      api.gotoDate(`${selectedYear}-${currData}-01`); // Provide your target month in the format 'YYYY-MM-DD'
-      //   api.gotoDate(`2020-02-01`); // Provide your target month in the format 'YYYY-MM-DD'
-    }
-
     getData();
+
+    if (calendarRef.current) {
+      let currData = month;
+      if (month) {
+        if (+month < 10) {
+          currData = `0${month}`;
+        }
+        const api = calendarRef.current.getApi();
+        api.gotoDate(`${year}-${currData}-01`); // Provide your target month in the format 'YYYY-MM-DD'
+      }
+    }
   }, [year, month]);
 
   return (
@@ -125,7 +128,7 @@ const Calendar = () => {
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin]}
-        headerToolbar={false}
+        // headerToolbar={false}
         initialView="dayGridMonth"
         events={appointmentList}
       />

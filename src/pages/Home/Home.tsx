@@ -24,7 +24,7 @@ const Home = () => {
     `${new Date().getUTCFullYear()}`
   );
   const [selectedMonth, setSelectedMonth] = useState<string>(
-    `${new Date().getMonth()}`
+    `${new Date().getMonth() + 1}`
   );
 
   const getData = async () => {
@@ -111,7 +111,7 @@ const Home = () => {
 
       <FullCalendar
         plugins={[dayGridPlugin]}
-        headerToolbar={false}
+        // headerToolbar={false}
         initialView="dayGridMonth"
         events={appointmentList}
       />
