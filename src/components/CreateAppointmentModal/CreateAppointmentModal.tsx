@@ -1,4 +1,11 @@
+import { useState } from "react";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
+
 const CreateAppointmentModal = () => {
+  const [value, onChange] = useState("10:00");
+
   return (
     <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
@@ -40,8 +47,15 @@ const CreateAppointmentModal = () => {
               placeholder="Type here"
               className="input input-bordered w-full mb-2"
             />
+
+            <TimePicker
+              onChange={() => {
+                onChange();
+              }}
+              value={value}
+            />
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn w-full max-w-xs mb-2">Close</button>
+            <button className="btn w-full mb-2">Close</button>
           </form>
         </div>
       </div>
