@@ -19,7 +19,8 @@ const initialState = {
         "11",
         "12"],
     yearList: ["2019", "2020", "2021", "2022", "2023"],
-    successMessage: ""
+    successMessage: "",
+    selectedAppointmentData: {}
 }
 
 const appointment = createSlice({
@@ -28,10 +29,13 @@ const appointment = createSlice({
     reducers: {
         storeAppointmentData: (state, action) => {
             state.appointmentList = action?.payload;
+        },
+        setSelectedAppointment: (state, action) => {
+            state.selectedAppointmentData = action?.payload;
         }
     },
 });
 
-export const { storeAppointmentData } = appointment.actions;
+export const { storeAppointmentData, setSelectedAppointment } = appointment.actions;
 
 export default appointment.reducer;

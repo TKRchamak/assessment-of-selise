@@ -40,6 +40,16 @@ const Calendar = () => {
     }
   };
 
+  const handleEventClick = (clickInfo: any) => {
+    setModalStatus(true);
+    // setspecificid(clickInfo.event.id || 1)
+    console.log("id--->", clickInfo.event.id);
+    const { title, start, end } = clickInfo.event;
+    console.log("Event clicked - Title:", title, clickInfo);
+    console.log("Start:", start);
+    console.log("End:", end);
+  };
+
   useEffect(() => {
     if (!year) return;
     setSelectedYear(year);
@@ -131,6 +141,7 @@ const Calendar = () => {
         // headerToolbar={false}
         initialView="dayGridMonth"
         events={appointmentList}
+        eventClick={handleEventClick}
       />
 
       <CreateAppointmentModal
