@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { GiCancel } from "react-icons/gi";
 
 type AppointmentType = {
   name?: string;
@@ -17,7 +17,7 @@ const CreateAppointmentModal = ({
   setModalStatus: (item: boolean) => void;
 }) => {
   // const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data: AppointmentType | any) => {
     console.log(data);
   };
@@ -33,6 +33,19 @@ const CreateAppointmentModal = ({
       />
       <div className="modal">
         <div className="modal-box">
+          <div className="relative">
+            <h3 className="font-bold text-center mb-4 uppercase">
+              Put Your data
+            </h3>
+            <button
+              className="absolute top-0 right-2"
+              onClick={() => {
+                setModalStatus(false);
+              }}
+            >
+              <GiCancel size={22} />
+            </button>
+          </div>
           <form method="dialog" onSubmit={handleSubmit(onSubmit)}>
             <input
               {...register("name")}
@@ -95,6 +108,13 @@ const CreateAppointmentModal = ({
               className="btn w-full mb-2"
               onClick={() => {
                 setModalStatus(false);
+                reset({
+                  name: "",
+                  gender: "male",
+                  age: "",
+                  date: "",
+                  time: "",
+                });
               }}
             >
               Create Appointment

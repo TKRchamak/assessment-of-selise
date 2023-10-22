@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home/Home";
+// import Home from "./pages/Home/Home";
 // import Loader from "./components/Loader/Loader";
 import Calendar from "./pages/Calendar/Calendar";
 
@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route index element={<Home />} />
+        <Route index element={<Calendar />} />
         <Route path="/year/:year/month/:month/" element={<Calendar />} />
       </Routes>
 
