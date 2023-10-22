@@ -25,7 +25,8 @@ const CreateAppointmentModal = ({
   const onSubmit = async (data: AppointmentType | any) => {
     console.log(data);
     try {
-      const response = await axios.post(`${serverUrl}/events`, data);
+      const reqData = { ...data, title: data?.name };
+      const response = await axios.post(`${serverUrl}/events`, reqData);
       console.log(response);
       setModalStatus(false);
       reset({
