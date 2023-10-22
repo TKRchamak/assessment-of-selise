@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
+// import { Dispatch, SetStateAction } from "react";
+// Dispatch<SetStateAction<Country[]>>
+
 
 export type AppointmentType = {
     name?: string;
@@ -15,20 +17,3 @@ export type AppointmentSliceType = {
     date: string;
     time: string;
 };
-
-// export type Team = {
-//     runList: number[];
-//     totalRun: number;
-// } & Country
-
-// export type Match = {
-//     id: string;
-//     ball_first: number;
-//     team1: Team;
-//     team2: Team;
-// };
-
-// export type CountryContextType = {
-//     selectedCountries: Country[];
-//     setSelectedCountries: Dispatch<SetStateAction<Country[]>>;
-// };

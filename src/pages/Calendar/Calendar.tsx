@@ -1,34 +1,42 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { useEffect, useRef, useState } from "react";
 import CreateAppointmentModal from "../../components/CreateAppointmentModal/CreateAppointmentModal";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { serverUrl } from "../../Redux";
+import { storeAppointmentData } from "../../Redux/AppointmentSlice";
 
 const Calendar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { year, month } = useParams();
   const calendarRef = useRef<any>(null);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
-  const yearList = ["2019", "2020", "2021"];
-  const monthList = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-  ];
+  const yearList = useSelector((state: any) => state?.appointment?.yearList);
+  const monthList = useSelector((state: any) => state?.appointment?.monthList);
+  const appointmentList = useSelector(
+    (state: any) => state?.appointment?.appointmentList
+  );
+
   const [selectedYear, setSelectedYear] = useState<string>(
     `${new Date().getUTCFullYear()}`
   );
   const [selectedMonth, setSelectedMonth] = useState<string>(
     `${new Date().getMonth()}`
   );
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(`${serverUrl}/events`);
+      // console.log(response.data);
+      dispatch(storeAppointmentData(response.data));
+    } catch (error) {
+      console.log("createProjectRequest error", error);
+      alert("task not create");
+    }
+  };
 
   useEffect(() => {
     if (!year) return;
@@ -37,9 +45,7 @@ const Calendar = () => {
     if (month) {
       setSelectedMonth(month);
     }
-  }, [year, month]);
 
-  useEffect(() => {
     if (calendarRef.current) {
       let currData = selectedMonth;
       if (+selectedMonth < 10) {
@@ -49,7 +55,9 @@ const Calendar = () => {
       api.gotoDate(`${selectedYear}-${currData}-01`); // Provide your target month in the format 'YYYY-MM-DD'
       //   api.gotoDate(`2020-02-01`); // Provide your target month in the format 'YYYY-MM-DD'
     }
-  }, [selectedYear, selectedMonth]);
+
+    getData();
+  }, [year, month]);
 
   return (
     <div className="p-5">
@@ -67,7 +75,7 @@ const Calendar = () => {
                 <li
                   key={item}
                   onClick={() => {
-                    setSelectedYear(item);
+                    navigate(`/year/${item}/month/${selectedMonth}`);
                   }}
                 >
                   <a className={item === selectedYear ? "text-red-600" : ""}>
@@ -90,7 +98,7 @@ const Calendar = () => {
                 <li
                   key={item}
                   onClick={() => {
-                    setSelectedMonth(item);
+                    navigate(`/year/${selectedYear}/month/${item}`);
                   }}
                 >
                   <a className={item === selectedMonth ? "text-red-600" : ""}>
@@ -119,6 +127,7 @@ const Calendar = () => {
         plugins={[dayGridPlugin]}
         headerToolbar={false}
         initialView="dayGridMonth"
+        events={appointmentList}
       />
 
       <CreateAppointmentModal

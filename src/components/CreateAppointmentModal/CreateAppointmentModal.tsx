@@ -21,17 +21,17 @@ const CreateAppointmentModal = ({
 }) => {
   // const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
   const { register, handleSubmit, reset } = useForm();
-  // const onSubmit = async(data: AppointmentType | any) => {
-  //   console.log(data);
-  //   try {
-  //     const response = await axios.post(`${serverUrl}/events`);
-  //     // console.log(response.data);
-  //     dispatch(storeAppointmentData(response.data));
-  //   } catch (error) {
-  //     console.log("createProjectRequest error", error);
-  //     alert("task not create");
-  //   }
-  // };
+  const onSubmit = async (data: AppointmentType | any) => {
+    console.log(data);
+    // try {
+    //   const response = await axios.post(`${serverUrl}/events`);
+    //   // console.log(response.data);
+    //   dispatch(storeAppointmentData(response.data));
+    // } catch (error) {
+    //   console.log("createProjectRequest error", error);
+    //   alert("task not create");
+    // }
+  };
 
   return (
     <div>

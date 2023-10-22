@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { storeAppointmentData } from "../../Redux/AppointmentSlice";
 import axios from "axios";
 import { serverUrl } from "../../Redux";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const data = false;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const yearList = useSelector((state: any) => state?.appointment?.yearList);
   const monthList = useSelector((state: any) => state?.appointment?.monthList);
   const appointmentList = useSelector(
@@ -60,7 +62,7 @@ const Home = () => {
                 <li
                   key={item}
                   onClick={() => {
-                    setSelectedYear(item);
+                    navigate(`/year/${item}/month/${selectedMonth}`);
                   }}
                 >
                   <a className={item === selectedYear ? "text-red-600" : ""}>
@@ -83,7 +85,7 @@ const Home = () => {
                 <li
                   key={item}
                   onClick={() => {
-                    setSelectedMonth(item);
+                    navigate(`/year/${selectedYear}/month/${item}`);
                   }}
                 >
                   <a className={item === selectedMonth ? "text-red-600" : ""}>
