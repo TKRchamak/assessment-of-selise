@@ -2,9 +2,11 @@ import { useParams } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { useEffect, useRef, useState } from "react";
+import CreateAppointmentModal from "../../components/CreateAppointmentModal/CreateAppointmentModal";
 
 const Calendar = () => {
   const { year, month } = useParams();
+  const calendarRef = useRef<any>(null);
   const yearList = ["2019", "2020", "2021"];
   const monthList = [
     "1",
@@ -27,7 +29,14 @@ const Calendar = () => {
     `${new Date().getMonth()}`
   );
 
-  const calendarRef = useRef<any>(null);
+  useEffect(() => {
+    if (!year) return;
+    setSelectedYear(year);
+
+    if (month) {
+      setSelectedMonth(month);
+    }
+  }, [year, month]);
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -39,20 +48,7 @@ const Calendar = () => {
       api.gotoDate(`${selectedYear}-${currData}-01`); // Provide your target month in the format 'YYYY-MM-DD'
       //   api.gotoDate(`2020-02-01`); // Provide your target month in the format 'YYYY-MM-DD'
     }
-
-    console.log(calendarRef);
   }, [selectedYear, selectedMonth]);
-
-  console.log(calendarRef);
-
-  useEffect(() => {
-    if (!year) return;
-
-    setSelectedYear(year);
-    if (month) {
-      setSelectedMonth(month);
-    }
-  }, [year, month]);
 
   return (
     <div className="p-5">
@@ -106,8 +102,12 @@ const Calendar = () => {
         </div>
 
         <div>
-          {/* <button>Create Appointment</button> */}
-          <button className="btn m-1">Create Appointment</button>
+          <button
+            className="btn m-1"
+            onClick={() => document.getElementById("my_modal_5").showModal()}
+          >
+            Create Appointment
+          </button>
         </div>
       </div>
       <FullCalendar
@@ -116,6 +116,8 @@ const Calendar = () => {
         headerToolbar={false}
         initialView="dayGridMonth"
       />
+
+      <CreateAppointmentModal />
     </div>
   );
 };
