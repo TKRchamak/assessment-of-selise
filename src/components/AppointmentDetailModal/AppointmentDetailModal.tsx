@@ -13,15 +13,6 @@ const AppointmentDetailModal = ({
     (state: any) => state?.appointment?.selectedAppointmentData
   );
 
-  // {
-  //   "id": 1,
-  //   "title": "event 2",
-  //   "start": "2023-10-22",
-  //   "end": "2023-10-23",
-  //   "allDay": true,
-  //   "HostName": "William"
-  // }
-
   return (
     <div>
       {/* Put this part before </body> tag */}
@@ -45,11 +36,26 @@ const AppointmentDetailModal = ({
             >
               <GiCancel size={22} />
             </button>
-
             <div>
-              <div>
-                <p>{"title"}</p>
-                <p>{selectedAppointmentData?.title}</p>
+              <div className="flex items-center justify-between mx-12">
+                <p>{"Name"}</p>
+                <p>{selectedAppointmentData?.name}</p>
+              </div>
+              <div className="flex items-center justify-between mx-12">
+                <p>{"Gender"}</p>
+                <p>{selectedAppointmentData?.gender}</p>
+              </div>
+              <div className="flex items-center justify-between mx-12">
+                <p>{"Age"}</p>
+                <p>{selectedAppointmentData?.age}</p>
+              </div>
+              <div className="flex items-center justify-between mx-12">
+                <p>{"Date"}</p>
+                <p>{selectedAppointmentData?.date}</p>
+              </div>
+              <div className="flex items-center justify-between mx-12">
+                <p>{"Time"}</p>
+                <p>{selectedAppointmentData?.time}</p>
               </div>
             </div>
           </div>

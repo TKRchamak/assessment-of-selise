@@ -20,12 +20,8 @@ const Home = () => {
   );
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
-  const [selectedYear, setSelectedYear] = useState<string>(
-    `${new Date().getUTCFullYear()}`
-  );
-  const [selectedMonth, setSelectedMonth] = useState<string>(
-    `${new Date().getMonth() + 1}`
-  );
+  const [selectedYear] = useState<string>(`${new Date().getUTCFullYear()}`);
+  const [selectedMonth] = useState<string>(`${new Date().getMonth() + 1}`);
 
   const getData = async () => {
     try {
@@ -40,6 +36,9 @@ const Home = () => {
 
   useEffect(() => {
     getData();
+
+    // setSelectedMonth(`${new Date().getUTCFullYear()}`);
+    // setSelectedYear(`${new Date().getMonth() + 1}`);
   }, []);
 
   if (data) {
@@ -58,7 +57,7 @@ const Home = () => {
               tabIndex={0}
               className="dropdown-content z-[2] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {yearList?.map((item) => (
+              {yearList?.map((item: string) => (
                 <li
                   key={item}
                   onClick={() => {
@@ -81,7 +80,7 @@ const Home = () => {
               tabIndex={1}
               className="dropdown-content z-[2] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {monthList?.map((item) => (
+              {monthList?.map((item: string) => (
                 <li
                   key={item}
                   onClick={() => {

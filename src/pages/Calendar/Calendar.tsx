@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { serverUrl } from "../../Redux";
 import { storeAppointmentData } from "../../Redux/AppointmentSlice";
+// import AppointmentDetailModal from "../../components/AppointmentDetailModal/AppointmentDetailModal";
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -40,15 +41,9 @@ const Calendar = () => {
     }
   };
 
-  const handleEventClick = (clickInfo: any) => {
-    setModalStatus(true);
-    // setspecificid(clickInfo.event.id || 1)
-    console.log("id--->", clickInfo.event.id);
-    const { title, start, end } = clickInfo.event;
-    console.log("Event clicked - Title:", title, clickInfo);
-    console.log("Start:", start);
-    console.log("End:", end);
-  };
+  // const handleEventClick = (clickInfo: any) => {
+  //   setModalStatus(true);
+  // };
 
   useEffect(() => {
     if (!year) return;
@@ -84,7 +79,7 @@ const Calendar = () => {
               tabIndex={0}
               className="dropdown-content z-[2] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {yearList?.map((item) => (
+              {yearList?.map((item: string) => (
                 <li
                   key={item}
                   onClick={() => {
@@ -107,7 +102,7 @@ const Calendar = () => {
               tabIndex={1}
               className="dropdown-content z-[2] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {monthList?.map((item) => (
+              {monthList?.map((item: string) => (
                 <li
                   key={item}
                   onClick={() => {
@@ -141,13 +136,18 @@ const Calendar = () => {
         // headerToolbar={false}
         initialView="dayGridMonth"
         events={appointmentList}
-        eventClick={handleEventClick}
+        // eventClick={handleEventClick}
       />
 
       <CreateAppointmentModal
         modalStatus={modalStatus}
         setModalStatus={setModalStatus}
       />
+
+      {/* <AppointmentDetailModal
+        detailModalStatus={true}
+        setDetailModalStatus={setModalStatus}
+      /> */}
     </div>
   );
 };
