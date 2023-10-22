@@ -1,23 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { serverUrl } from ".";
 
-// export const createTaskRequest = createAsyncThunk('user/createTaskRequest', async (payload, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-export const createTaskRequest = createAsyncThunk('user/createTaskRequest', async (payload: number[], { rejectWithValue }) => {
-    const config = {
-        headers: {
-            'Authorization': `Token ${localStorage.getItem("token")}`
-        }
-    };
-    try {
-        const response = await axios.post(`"http:/"/task/task-list/`, payload[1], config);
-        alert("task created Successfully");
-        return response.data;
-    } catch (error) {
-        console.log('createProjectRequest error', error);
-        alert("task not create");
-        return rejectWithValue(error);
-    }
-})
+
+// export const getAppointment = createAsyncThunk('appointment/getAppointmentList', async (payload: null, { rejectWithValue }) => {
+//     try {
+//         const response = await axios.get(`${serverUrl}/events`);
+//         return response.data;
+//     } catch (error) {
+//         console.log('createProjectRequest error', error);
+//         alert("task not create");
+//         return rejectWithValue(error);
+//     }
+// })
 
 
 const initialState = {
@@ -49,27 +44,32 @@ const appointment = createSlice({
         //     state.successMessage = "";
         // }
 
-        clearSuccessMessage: (state) => {
-            state.successMessage = "";
+        // clearSuccessMessage: (state) => {
+        //     state.successMessage = "";
+        // },
+
+        storeAppointmentData: (state, action) => {
+            state.appointmentList = action?.payload;
         }
     },
-    extraReducers(builder) {
-        builder
-            .addCase(createTaskRequest.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(createTaskRequest.fulfilled, (state) => {
-                state.status = 'succeeded';
-                state.successMessage = 'Task Created Successfully';
-            })
-            .addCase(createTaskRequest.rejected, (state) => {
-                state.status = 'failed';
-            })
+    // extraReducers(builder) {
+    //     builder
+    //         .addCase(getAppointment.pending, (state) => {
+    //             state.status = 'loading';
+    //         })
+    //         .addCase(getAppointment.fulfilled, (state, action) => {
+    //             console.log(action.payload);
+    //             state.appointmentList = action.payload;
+    //             state.successMessage = 'Task Created Successfully';
+    //         })
+    //         .addCase(getAppointment.rejected, (state) => {
+    //             state.status = 'failed';
+    //         })
 
-    }
+    // }
 });
 
-export const { clearSuccessMessage } = appointment.actions;
+export const { storeAppointmentData } = appointment.actions;
 // export const getMonthList = (state: any) => (state.appointment.monthList)
 
 export default appointment.reducer;

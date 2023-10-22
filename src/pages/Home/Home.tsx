@@ -3,12 +3,19 @@ import Loader from "../../components/Loader/Loader";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import CreateAppointmentModal from "../../components/CreateAppointmentModal/CreateAppointmentModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { storeAppointmentData } from "../../Redux/AppointmentSlice";
+import axios from "axios";
+import { serverUrl } from "../../Redux";
 
 const Home = () => {
   const data = false;
+  const dispatch = useDispatch();
   const yearList = useSelector((state: any) => state?.appointment?.yearList);
   const monthList = useSelector((state: any) => state?.appointment?.monthList);
+  const appointmentList = useSelector(
+    (state: any) => state?.appointment?.appointmentList
+  );
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
   const [selectedYear, setSelectedYear] = useState<string>(
@@ -17,6 +24,21 @@ const Home = () => {
   const [selectedMonth, setSelectedMonth] = useState<string>(
     `${new Date().getMonth()}`
   );
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(`${serverUrl}/events`);
+      // console.log(response.data);
+      dispatch(storeAppointmentData(response.data));
+    } catch (error) {
+      console.log("createProjectRequest error", error);
+      alert("task not create");
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   if (data) {
     return <Loader />;
@@ -89,6 +111,7 @@ const Home = () => {
         plugins={[dayGridPlugin]}
         headerToolbar={false}
         initialView="dayGridMonth"
+        events={appointmentList}
       />
 
       <CreateAppointmentModal
