@@ -1,7 +1,5 @@
 import { useState } from "react";
-import TimePicker from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
+import { useForm } from "react-hook-form";
 
 type AppointmentType = {
   name?: string;
@@ -11,19 +9,34 @@ type AppointmentType = {
   time: string;
 };
 
-const CreateAppointmentModal = () => {
-  const [value, onChange] = useState("10:00");
-  const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
+const CreateAppointmentModal = ({
+  modalStatus = false,
+  setModalStatus,
+}: {
+  modalStatus: boolean;
+  setModalStatus: (item: boolean) => void;
+}) => {
+  // const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data: AppointmentType | any) => {
+    console.log(data);
+  };
 
   return (
-    <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-      <div className="modal-box">
-        <h3 className="font-bold text-lg">Hello!</h3>
-        <p className="py-4">Press ESC key or click the button below to close</p>
-        <div className="modal-action">
-          <form method="dialog">
+    <div>
+      {/* Put this part before </body> tag */}
+      <input
+        type="checkbox"
+        id="my_modal_6"
+        checked={modalStatus}
+        className="modal-toggle"
+      />
+      <div className="modal">
+        <div className="modal-box">
+          <form method="dialog" onSubmit={handleSubmit(onSubmit)}>
             <input
-              type="Name"
+              {...register("name")}
+              type="text"
               name="name"
               placeholder="Name"
               className="input input-bordered w-full mb-2"
@@ -32,6 +45,7 @@ const CreateAppointmentModal = () => {
               <label className="ms-2">Gender :</label>
               <div className="flex justify-start items-center mx-14">
                 <input
+                  {...register("gender")}
                   type="radio"
                   name="gender"
                   className="radio radio-primary me-1"
@@ -43,6 +57,7 @@ const CreateAppointmentModal = () => {
               </div>
               <div className="flex justify-start items-center">
                 <input
+                  {...register("gender")}
                   id="female"
                   type="radio"
                   name="gender"
@@ -54,32 +69,40 @@ const CreateAppointmentModal = () => {
             </div>
 
             <input
-              type="Age"
+              {...register("age")}
+              type="text"
               name="age"
               placeholder="Age"
               className="input input-bordered w-full mb-2"
             />
 
             <input
+              {...register("date")}
               type="date"
-              name="age"
-              placeholder="Type here"
+              name="date"
+              placeholder="date"
               className="input input-bordered w-full mb-2"
             />
 
             <input
+              {...register("time")}
               type="time"
-              name="age"
-              placeholder="Type here"
+              name="time"
+              placeholder="time"
               className="input input-bordered w-full mb-2"
             />
-            {/* <TimePicker onChange={onChange} value={value} isOpen={false} /> */}
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn w-full mb-2">Close</button>
+            <button
+              className="btn w-full mb-2"
+              onClick={() => {
+                setModalStatus(false);
+              }}
+            >
+              Create Appointment
+            </button>
           </form>
         </div>
       </div>
-    </dialog>
+    </div>
   );
 };
 

@@ -7,6 +7,7 @@ import CreateAppointmentModal from "../../components/CreateAppointmentModal/Crea
 const Calendar = () => {
   const { year, month } = useParams();
   const calendarRef = useRef<any>(null);
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
   const yearList = ["2019", "2020", "2021"];
   const monthList = [
     "1",
@@ -104,7 +105,9 @@ const Calendar = () => {
         <div>
           <button
             className="btn m-1"
-            onClick={() => document.getElementById("my_modal_5").showModal()}
+            onClick={() => {
+              setModalStatus(true);
+            }}
           >
             Create Appointment
           </button>
@@ -117,7 +120,10 @@ const Calendar = () => {
         initialView="dayGridMonth"
       />
 
-      <CreateAppointmentModal />
+      <CreateAppointmentModal
+        modalStatus={modalStatus}
+        setModalStatus={setModalStatus}
+      />
     </div>
   );
 };
