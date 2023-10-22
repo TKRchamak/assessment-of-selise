@@ -113,6 +113,7 @@ const Calendar = () => {
           </button>
         </div>
       </div>
+
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin]}

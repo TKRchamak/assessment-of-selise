@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { GiCancel } from "react-icons/gi";
 
@@ -14,7 +15,7 @@ const CreateAppointmentModal = ({
   setModalStatus,
 }: {
   modalStatus: boolean;
-  setModalStatus: (item: boolean) => void;
+  setModalStatus: Dispatch<SetStateAction<boolean>>;
 }) => {
   // const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
   const { register, handleSubmit, reset } = useForm();
