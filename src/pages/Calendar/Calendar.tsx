@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Calendar = () => {
   const { year, month } = useParams();
@@ -21,11 +21,29 @@ const Calendar = () => {
     "12",
   ];
   const [selectedYear, setSelectedYear] = useState<string>(
-    `${new Date().getFullYear()}`
+    `${new Date().getUTCFullYear()}`
   );
   const [selectedMonth, setSelectedMonth] = useState<string>(
     `${new Date().getMonth()}`
   );
+
+  const calendarRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      let currData = selectedMonth;
+      if (+selectedMonth < 10) {
+        currData = `0${selectedMonth}`;
+      }
+      const api = calendarRef.current.getApi();
+      api.gotoDate(`${selectedYear}-${currData}-01`); // Provide your target month in the format 'YYYY-MM-DD'
+      //   api.gotoDate(`2020-02-01`); // Provide your target month in the format 'YYYY-MM-DD'
+    }
+
+    console.log(calendarRef);
+  }, [selectedYear, selectedMonth]);
+
+  console.log(calendarRef);
 
   useEffect(() => {
     if (!year) return;
@@ -46,7 +64,7 @@ const Calendar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+              className="dropdown-content z-[2] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               {yearList?.map((item) => (
                 <li
@@ -69,7 +87,7 @@ const Calendar = () => {
             </label>
             <ul
               tabIndex={1}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+              className="dropdown-content z-[2] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               {monthList?.map((item) => (
                 <li
@@ -93,8 +111,9 @@ const Calendar = () => {
         </div>
       </div>
       <FullCalendar
+        ref={calendarRef}
         plugins={[dayGridPlugin]}
-        // header={false}
+        headerToolbar={false}
         initialView="dayGridMonth"
       />
     </div>
