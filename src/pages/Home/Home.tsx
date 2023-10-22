@@ -4,10 +4,14 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import CreateAppointmentModal from "../../components/CreateAppointmentModal/CreateAppointmentModal";
 import { useDispatch, useSelector } from "react-redux";
-import { storeAppointmentData } from "../../Redux/AppointmentSlice";
+import {
+  setSelectedAppointment,
+  storeAppointmentData,
+} from "../../Redux/AppointmentSlice";
 import axios from "axios";
 import { serverUrl } from "../../Redux";
 import { useNavigate } from "react-router-dom";
+import AppointmentDetailModal from "../../components/AppointmentDetailModal/AppointmentDetailModal";
 
 const Home = () => {
   const data = false;
@@ -19,6 +23,7 @@ const Home = () => {
     (state: any) => state?.appointment?.appointmentList
   );
   const [modalStatus, setModalStatus] = useState<boolean>(false);
+  const [detailModalStatus, setDetailModalStatus] = useState<boolean>(false);
 
   const [selectedYear] = useState<string>(`${new Date().getUTCFullYear()}`);
   const [selectedMonth] = useState<string>(`${new Date().getMonth() + 1}`);
@@ -34,11 +39,13 @@ const Home = () => {
     }
   };
 
+  const handleEventClick = (clickInfo: any) => {
+    dispatch(setSelectedAppointment(clickInfo));
+    setDetailModalStatus(true);
+  };
+
   useEffect(() => {
     getData();
-
-    // setSelectedMonth(`${new Date().getUTCFullYear()}`);
-    // setSelectedYear(`${new Date().getMonth() + 1}`);
   }, []);
 
   if (data) {
@@ -110,14 +117,23 @@ const Home = () => {
 
       <FullCalendar
         plugins={[dayGridPlugin]}
-        // headerToolbar={false}
+        headerToolbar={false}
         initialView="dayGridMonth"
         events={appointmentList}
+        eventClick={(event) => {
+          console.log(event.event._def);
+          handleEventClick(event.event._def?.extendedProps);
+        }}
       />
 
       <CreateAppointmentModal
         modalStatus={modalStatus}
         setModalStatus={setModalStatus}
+      />
+
+      <AppointmentDetailModal
+        detailModalStatus={detailModalStatus}
+        setDetailModalStatus={setDetailModalStatus}
       />
     </div>
   );
