@@ -6,8 +6,11 @@ import CreateAppointmentModal from "../../components/CreateAppointmentModal/Crea
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { serverUrl } from "../../Redux";
-import { storeAppointmentData } from "../../Redux/AppointmentSlice";
-// import AppointmentDetailModal from "../../components/AppointmentDetailModal/AppointmentDetailModal";
+import {
+  setSelectedAppointment,
+  storeAppointmentData,
+} from "../../Redux/AppointmentSlice";
+import AppointmentDetailModal from "../../components/AppointmentDetailModal/AppointmentDetailModal";
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -17,6 +20,7 @@ const Calendar = () => {
 
   const calendarRef = useRef<any>(null);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
+  const [detailModalStatus, setDetailModalStatus] = useState<boolean>(false);
   const yearList = useSelector((state: any) => state?.appointment?.yearList);
   const monthList = useSelector((state: any) => state?.appointment?.monthList);
   const appointmentList = useSelector(
@@ -41,9 +45,11 @@ const Calendar = () => {
     }
   };
 
-  // const handleEventClick = (clickInfo: any) => {
-  //   setModalStatus(true);
-  // };
+  const handleEventClick = (clickInfo: any) => {
+    console.log(clickInfo?.event);
+    dispatch(setSelectedAppointment(clickInfo));
+    setDetailModalStatus(true);
+  };
 
   useEffect(() => {
     if (!year) return;
@@ -133,10 +139,13 @@ const Calendar = () => {
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin]}
-        // headerToolbar={false}
+        headerToolbar={false}
         initialView="dayGridMonth"
         events={appointmentList}
-        // eventClick={handleEventClick}
+        eventClick={(event) => {
+          console.log(event.event._def);
+          handleEventClick(event.event._def?.extendedProps);
+        }}
       />
 
       <CreateAppointmentModal
@@ -144,10 +153,10 @@ const Calendar = () => {
         setModalStatus={setModalStatus}
       />
 
-      {/* <AppointmentDetailModal
-        detailModalStatus={true}
-        setDetailModalStatus={setModalStatus}
-      /> */}
+      <AppointmentDetailModal
+        detailModalStatus={detailModalStatus}
+        setDetailModalStatus={setDetailModalStatus}
+      />
     </div>
   );
 };

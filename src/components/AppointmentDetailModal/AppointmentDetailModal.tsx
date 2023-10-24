@@ -50,10 +50,6 @@ const AppointmentDetailModal = ({
                 <p>{selectedAppointmentData?.age}</p>
               </div>
               <div className="flex items-center justify-between mx-12">
-                <p>{"Date"}</p>
-                <p>{selectedAppointmentData?.date}</p>
-              </div>
-              <div className="flex items-center justify-between mx-12">
                 <p>{"Time"}</p>
                 <p>{selectedAppointmentData?.time}</p>
               </div>

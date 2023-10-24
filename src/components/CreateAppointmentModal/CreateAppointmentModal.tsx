@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { GiCancel } from "react-icons/gi";
 import { serverUrl } from "../../Redux";
+import { useDispatch } from "react-redux";
+import { storeAppointmentData } from "../../Redux/AppointmentSlice";
 
 type AppointmentType = {
   name?: string;
@@ -19,6 +21,7 @@ const CreateAppointmentModal = ({
   modalStatus: boolean;
   setModalStatus: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const dispatch = useDispatch();
   // const [inputFieldData, setInputFieldData] = useState<AppointmentType>();
   const { register, handleSubmit, reset } = useForm();
 
@@ -28,6 +31,10 @@ const CreateAppointmentModal = ({
       const reqData = { ...data, title: data?.name };
       const response = await axios.post(`${serverUrl}/events`, reqData);
       console.log(response);
+      const updateList = await axios.get(`${serverUrl}/events`);
+      // console.log(response.data);
+      dispatch(storeAppointmentData(updateList.data));
+
       setModalStatus(false);
       reset({
         name: "",
